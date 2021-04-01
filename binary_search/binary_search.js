@@ -2,7 +2,7 @@ const binary_search = (arr, item) => {
   let low = 0;
   let high = arr.length -1;
 
-  while (high > low) {
+  while (high >= low) {
     let span = Math.floor((high - low) / 2);
     if (span == 0){
       return undefined;
