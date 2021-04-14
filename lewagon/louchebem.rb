@@ -1,24 +1,32 @@
+
 def louchebem_word(str)
-  if str.length > 1
-    suffix = ["em", "é", "ji", "oc", "ic", "uche", "ès"]
-    res = ''
-    arr = []
+  suffix = ["em", "é", "ji", "oc", "ic", "uche", "ès"].sample
+  res = ''
+  arr = []
 
-    str.split('').each_with_index { |c, i| c =~ /[aeiou]/ ? arr << i : nil }
+  return str if str.length == 1
 
-    res = "l#{str[arr[0]..-1]}#{str[arr[0] -1]}#{suffix.sample}"
-    vres = "l#{str[arr[0]..-1]}#{suffix.sample}"
-
-    str[0] =~ /[aeiou]/ ? vres : res
+  if str[0] =~ /[aeiou]/
+    "l#{str}#{suffix}"
   else
-    str
+    vowel_index = str.chars.index { |c| c =~ /[aeiou]/ }
+    start = str[0...vowel_index]
+    ending = str[vowel_index...str.length]
+    "l#{ending}#{start}#{suffix}"
   end
 end
 
-def louchebem(sentence)
+def louchebemize(sentence)
   res = []
-  sentence.split(' ').each { |w| res << louchebem_word(w) }
-  res.join(' ')
+  words = sentence.split(/\b/) 
+
+  words.each do |w| 
+    if w =~ /\W/
+      res << w
+    else
+      res << louchebem_word(w)
+    end
+  end
+  res.join
 end
 
-p louchebem('chat, fou!')
